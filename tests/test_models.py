@@ -72,7 +72,13 @@ class TestProductModel(unittest.TestCase):
 
     def test_create_a_product(self):
         """It should Create a product and assert that it exists"""
-        product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
+        product = Product(
+            name="Fedora",
+            description="A red hat",
+            price=12.50,
+            available=True,
+            category=Category.CLOTHS,
+        )
         self.assertEqual(str(product), "<Product Fedora id=[None]>")
         self.assertTrue(product is not None)
         self.assertEqual(product.id, None)
@@ -159,13 +165,13 @@ class TestProductModel(unittest.TestCase):
         for product in products:
             product.create()
         name = products[0].name
-        
+
         named_items = []
         for product in products:
             if product.name == name:
                 named_items.append(product)
         count = len(named_items)
-        
+
         found = Product.find_by_name(name)
         self.assertEqual(found.count(), count)
         for product in found:
@@ -177,13 +183,13 @@ class TestProductModel(unittest.TestCase):
         for product in products:
             product.create()
         available = products[0].available
-        
+
         available_items = []
         for product in products:
-            if product.name == name:
+            if product.available == available:
                 available_items.append(product)
         count = len(available_items)
-        
+
         found = Product.find_by_availability(available)
         self.assertEqual(found.count(), count)
         for product in found:
@@ -198,15 +204,15 @@ class TestProductModel(unittest.TestCase):
 
         category_items = []
         for product in products:
-            if product.name == name:
+            if product.category == category:
                 category_items.append(product)
         count = len(category_items)
-        
+
         found = Product.find_by_category(category)
         self.assertEqual(found.count(), count)
         for product in found:
             self.assertEqual(product.category, category)
-    
+
     def test_find_by_price(self):
         """Find Products by Price"""
         products = ProductFactory.create_batch(10)
@@ -216,10 +222,10 @@ class TestProductModel(unittest.TestCase):
 
         priced_items = []
         for product in products:
-            if product.name == name:
+            if product.price == price:
                 priced_items.append(product)
         count = len(priced_items)
-        
+
         found = Product.find_by_price(price)
         self.assertEqual(found.count(), count)
         for product in found:
